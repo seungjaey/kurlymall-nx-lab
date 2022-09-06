@@ -1,0 +1,36 @@
+{
+  "name": "kurlymall-nx-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seungjaey/kurlymall-nx-lab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seungjaey/kurlymall-nx-lab/issues"
+  },
+  "homepage": "https://github.com/seungjaey/kurlymall-nx-lab#readme",
+  "devDependencies": {
+    "@types/debug": "^4.1.7",
+    "@types/node": "^18.7.15",
+    "@types/progress": "^2.0.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.2"
+  },
+  "dependencies": {
+    "@fxts/core": "^0.9.0",
+    "@svgr/core": "^6.3.1",
+    "axios": "^0.27.2",
+    "debug": "^4.3.4",
+    "dotenv": "^16.0.2",
+    "progress": "^2.0.3",
+    "puppeteer": "^17.1.1"
+  }
+}
