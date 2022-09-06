@@ -7,24 +7,9 @@ import ProgressBar from 'progress'
 
 import SVG_FILE_PATH_LIST from './SVG_FILE_PATH_LIST.json'
 
+import setupDir from '../utils/setupDir'
+
 config()
-
-const checkDirExist = async (path: string): Promise<boolean> => {
-  try {
-    await readdir(path)
-    return true
-  } catch (error) {
-    return false
-  }
-}
-
-const setupDir = async (path: string): Promise<void> => {
-  const isDirExist = await checkDirExist(path)
-  if (isDirExist) {
-    await rmdir(path, {recursive: true})
-  }
-  await mkdir(path)
-}
 
 async function run() {
   const RESULT_DIR_PATH = resolve(__dirname, 'result')
