@@ -1,7 +1,7 @@
 import { basename, resolve } from 'path'
 import { config } from 'dotenv'
-import { readFile, writeFile, readdir, mkdir } from 'fs/promises'
-import {pipe, map, each, toAsync, size} from '@fxts/core'
+import { readFile, writeFile, readdir, mkdir, rmdir } from 'fs/promises'
+import {pipe, map, each, toAsync, size, toArray} from '@fxts/core'
 import { transform } from '@svgr/core'
 import ProgressBar from 'progress'
 
@@ -18,10 +18,10 @@ const checkDirExist = async (path: string): Promise<boolean> => {
   }
 }
 
-const readOrCreateDir = async (path: string): Promise<void> => {
+const setupDir = async (path: string): Promise<void> => {
   const isDirExist = await checkDirExist(path)
   if (isDirExist) {
-    return
+    await rmdir(path, {recursive: true})
   }
   await mkdir(path)
 }
@@ -33,29 +33,44 @@ async function run() {
 
   // TODO: Spawn child process for run  `extract.sh`
 
-  await readOrCreateDir(RESULT_DIR_PATH)
+  await setupDir(RESULT_DIR_PATH)
 
   const progressBar = new ProgressBar('Processing [:bar] :percent :current/:total', {
     width: 20,
     total: size(SVG_FILE_PATH_LIST)
   })
 
-  await pipe(
+  const pathList = pipe(
     SVG_FILE_PATH_LIST,
-    map(path => `${BASE_PROJECT_PATH}${path}`),
-    toAsync,
-    each( async path => {
-      const baseName = basename(path)
+    map(path => {
+      const absolutePath = `${BASE_PROJECT_PATH}${path}`
+      const baseName = basename(absolutePath)
       const componentName = baseName
         .replace(new RegExp('-', 'g'), '_')
         .replace('.svg', '')
+      return [absolutePath, componentName]
+    }),
+    toArray
+  )
+
+  await writeFile(
+    `${RESULT_DIR_PATH}/component_list.json`,
+    JSON.stringify(pathList),
+    {encoding: 'utf-8'}
+  )
+
+  await pipe(
+    pathList,
+    toAsync,
+    each( async args => {
+      const [path, componentName] = args
       const buffer = await readFile(path, { encoding: 'utf-8' })
       const jsCode = await transform(
         buffer.toString(),
         { jsxRuntime: 'automatic', icon: false, typescript: true },
         { componentName }
       )
-      await writeFile(`${RESULT_DIR_PATH}/${baseName.replace('svg', 'tsx')}`, jsCode, {
+      await writeFile(`${RESULT_DIR_PATH}/${componentName}.tsx`, jsCode, {
         encoding: 'utf-8'
       })
       progressBar.tick()
