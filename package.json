@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:nx-extract-color": "ts-node ./nx-extract-color",
+    "start:nx-route-path-ts": "ts-node ./nx-route-path-ts",
+    "start:nx-svg-to-component": "ts-node ./nx-svg-to-component",
+    "start:simple-engine": "ts-node ./simple-engine"
   },
   "repository": {
     "type": "git",
