@@ -86,6 +86,9 @@ async function run(url: string) {
   }
   const browser = await puppeteer.launch()
   const page = await browser.newPage()
+  page.on('dialog', async dialog => {
+    await dialog.accept()
+  })
   await page.goto(url, {
     waitUntil: 'networkidle0'
   })
@@ -99,6 +102,7 @@ async function run(url: string) {
   await pipe(
     hrefList,
     toAsync,
+    filter(href => DATA[href] === undefined),
     each(async href => {
       await run(href)
     })
