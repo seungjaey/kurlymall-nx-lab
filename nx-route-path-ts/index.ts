@@ -2,6 +2,14 @@ import { pipe, map, split, join, toArray, isEmpty, filter, some } from '@fxts/co
 import { writeFile } from 'fs/promises'
 import FILE_PATH_LIST from './FILE_PATH_LIST.json'
 
+function parsePath(path: string) {
+  const LAST_INDEX_ROUTE_REGEX = /\/index$/;
+  if (path.lastIndexOf('/index') === -1) {
+    return path;
+  }
+  return path.replace(LAST_INDEX_ROUTE_REGEX, '') || '/';
+}
+
 async function run() {
   const PATH_PREFIX = 'Users/hamtori/kurly/kurlymall-nx/pages';
   const FILE_EXT_REGEX = /(\.tsx)$/
@@ -41,14 +49,14 @@ async function run() {
         join(UNDER_LINE_DELIMITER)
       )
       const key = pathKey.replace(INDEX_ROUTE_REGEX, '')
-      return [key, path]
+      return [key, parsePath(path)]
     }),
     toArray
   )
 
-  const pathTypeStr = pipe(
+  const pathKeyTypeStr = pipe(
     [
-      `type PathKey = `,
+      `type PathKeyType = `,
       ...(
         pipe(
           data,
@@ -64,15 +72,33 @@ async function run() {
     join('')
   )
 
+  const pathKeyStr = pipe(
+    [
+      `const PathKey: Record<PathKeyType, PathKeyType> = {`,
+      ...(
+        pipe(
+          data,
+          map(entries => {
+            const [key] = entries
+            return `  ${key}: '${key}'`;
+          }),
+          join(',\n')
+        )
+      ),
+      `};`
+    ],
+    join('')
+  )
+
   const pathObjectStr = pipe(
     [
-      `const Paths: Record<PathKey, string> = {`,
+      `const Paths: Record<string, PathKeyType> = {`,
       ...(
         pipe(
           data,
           map(entries => {
             const [key, value] = entries
-            return `\t${key}: '${value}',`
+            return `\t'${value}': PathKey.${key},`
           }),
         )
       ),
@@ -85,7 +111,7 @@ async function run() {
   await writeFile(
     `./Paths.tsx`,
       pipe(
-        [pathTypeStr, pathObjectStr],
+        [pathKeyTypeStr, pathKeyStr, pathObjectStr],
         join('\n\n')
       )
     )
