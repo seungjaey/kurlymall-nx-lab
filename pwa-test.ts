@@ -1,6 +1,6 @@
 import axios from 'axios';
 import ProgressBar from 'progress';
-import {pipe, map, toArray, toAsync, split, tap, size, filter} from '@fxts/core';
+import {pipe, map, toArray, toAsync, split, concurrent, size, filter} from '@fxts/core';
 
 const str = `public/favicon.ico
 public/images/icons/favicon-16x16.png
@@ -85,7 +85,7 @@ const DATA = pipe(
   toArray,
 );
 
-async function run(data: string[]) {
+async function run(host: string, data: string[]) {
   const totalSize = size(data);
   const progressBar = new ProgressBar('Processing [:bar] :percent :current/:total', {
     width: 20,
@@ -97,7 +97,7 @@ async function run(data: string[]) {
     map(async path => {
       progressBar.tick()
       try {
-        const {status} = await axios.get(`http://localhost${path}`, {
+        const {status} = await axios.get(`${host}${path}`, {
           headers: {
             'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1',
           },
@@ -107,6 +107,7 @@ async function run(data: string[]) {
         return [path, 'fail'];
       }
     }),
+    concurrent(5),
     toArray,
   )
 
@@ -119,7 +120,8 @@ async function run(data: string[]) {
     toArray,
   )
   console.log(`total ${totalSize} : failed = ${size(failed)}`);
+  console.log(failed);
   return result;
 }
 
-run(DATA);
+run('https://www.stg.kurly.com', DATA);
