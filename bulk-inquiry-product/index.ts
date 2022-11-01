@@ -20,7 +20,6 @@ interface InquiryResponse {
   success: boolean
 }
 
-
 /**
  * TODO
  * - Target User Token
@@ -43,21 +42,21 @@ const postInquiry = async (client: AxiosInstance, productCode: string, postId: n
 
 
 async function run() {
-  const TARGET_PRODUCT_CODE = '1000037103';
+  const TARGET_PRODUCT_CODE = '5116466';
   const httpClient = axios.create({
     baseURL: 'https://api.perf.kurly.com',
     headers: {
-      authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjYXJ0X2lkIjoiZDY5NjI1ZDYtNDZlMy00MTEyLTg4ODAtNmM2ZTQ5ODBlMzU4IiwiaXNfZ3Vlc3QiOmZhbHNlLCJ1dWlkIjoiYTlmY2VmNWItOWY4ZS01YTdmLTk1NDEtMjBjZDc4N2Q5ZGNjIiwibV9ubyI6MjUzMzA1NzYsIm1faWQiOiJ0aGVwdXJwbGV1c2VyIiwibGV2ZWwiOjEsInN1YiI6ImE5ZmNlZjViLTlmOGUtNWE3Zi05NTQxLTIwY2Q3ODdkOWRjYyIsImlzcyI6Imh0dHBzOi8vYXBpLnBlcmYua3VybHkuY29tL3YzL2F1dGgvcmVmcmVzaCIsImlhdCI6MTY2NTQ3MzE5NiwiZXhwIjoxNjY1NDgxMjM2LCJuYmYiOjE2NjU0Nzc2MzYsImp0aSI6Im1NSFI2V0k4bHJ6eDVUWGMifQ.w90oxzxpZCHmEiZGllMZpCmRQpLItLnhcR_4ZchCxhw'
+      authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjYXJ0X2lkIjoiYjhmN2E2NjEtOGMxNi00MmM3LThjZTktNDE5ODcxZDc2MmNjIiwiaXNfZ3Vlc3QiOmZhbHNlLCJ1dWlkIjoiOTBlMDljYmEtZjhiYi01ZGFlLWEwMDUtNjY3YjFmYWYxMTExIiwibV9ubyI6MjUzMzA1ODMsIm1faWQiOiJwdXJwbGV1c2VyIiwibGV2ZWwiOjE0LCJzdWIiOiI5MGUwOWNiYS1mOGJiLTVkYWUtYTAwNS02NjdiMWZhZjExMTEiLCJpc3MiOiJodHRwczovL2FwaS5wZXJmLmt1cmx5LmNvbS92My9hdXRoL3JlZnJlc2giLCJpYXQiOjE2NjcyODIyNTgsImV4cCI6MTY2NzI5MTM0NCwibmJmIjoxNjY3Mjg3NzQ0LCJqdGkiOiJKdjJ6VHk5ckZnWGxnbXlqIn0.ts7kA9OGuUyz9CHWzzH3Lu8Yh_TE7gPDYpvzA87YiBc'
     },
   });
 
   await pipe(
-    range(11, 40),
+    range(0, 40),
     map(i => ({
       id: null,
-      contents: `상품문의_테스트_${i}`,
+      contents: `[pre 2.7.2] 상품문의_테스트_${i}`,
       is_secret: true,
-      subject: `_상품문의_테스트_${i}`,
+      subject: `[pre 2.7.2] 상품문의_테스트_${i}`,
     })),
     toAsync,
     map(async post => {
