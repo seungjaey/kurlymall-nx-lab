@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start:color": "ts-node ./nx-extract-color-by-page",
     "start:nx-extract-color": "ts-node ./nx-extract-color",
     "start:nx-route-path-ts": "ts-node ./nx-route-path-ts",
     "start:nx-svg-to-component": "ts-node ./nx-svg-to-component",
