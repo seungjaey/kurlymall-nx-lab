@@ -1,22 +1,16 @@
-import {resolve, dirname, basename} from 'path';
+import {resolve, dirname} from 'path';
 import {readFile, readdir, writeFile} from 'fs/promises';
 import {
   pipe,
   map,
   filter,
-  split,
   toArray,
-  take,
   toAsync,
-  each,
   nth,
   flat,
   isEmpty,
-  concat,
   concurrent
 } from '@fxts/core'
-import {Dirent} from "fs";
-import {Page} from "puppeteer";
 
 type PageItem = string;
 
@@ -67,7 +61,7 @@ const checkNodeModuleByPath = (path: string) => !(path.startsWith('.') || path.s
 
 type ChildFileTuple = [number, string]
 
-async function findFileInDepth(aPath: string, depth: number = 0): Promise<ChildFileTuple[]> {
+async function findFileInDepth(aPath: string, depth: number = 0): Promise<[string, ChildFileTuple[]]> {
   const buffer = await readFile(aPath)
   const fileContent = buffer.toString()
   const regexIter = fileContent.matchAll(IMPORT_REGEX)
@@ -112,21 +106,23 @@ async function findFileInDepth(aPath: string, depth: number = 0): Promise<ChildF
   )
 
   if (isEmpty(actualFileList)) {
-    return []
+    return ['end', []]
   }
 
   const result = await pipe(
     actualFileList,
     toAsync,
     map(async filePath => {
+      console.log(`${depth}\tfile = ${filePath}`)
       const childFile = await findFileInDepth(filePath as string, depth + 1)
       return [[filePath], [childFile]]
     }),
     flat,
+    concurrent(10),
     toArray,
-  )
+  ) as ChildFileTuple[]
 
-  return result as ChildFileTuple[]
+  return [aPath, result]
 }
 
 async function run(workingDir: string) {
@@ -136,6 +132,7 @@ async function run(workingDir: string) {
     allPageSourcePathList,
     toAsync,
     map(async pageSourcePath => {
+      console.log(`pageSourcePath = ${pageSourcePath}`)
       const targetPaths = await findFileInDepth(pageSourcePath)
       return [pageSourcePath, targetPaths]
     }),
