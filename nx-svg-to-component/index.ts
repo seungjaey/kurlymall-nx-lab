@@ -1,8 +1,8 @@
-import { basename, resolve } from 'path'
-import { config } from 'dotenv'
-import { readFile, writeFile, readdir, mkdir, rmdir } from 'fs/promises'
+import {basename, resolve} from 'path'
+import {config} from 'dotenv'
+import {readFile, writeFile} from 'fs/promises'
 import {pipe, map, each, toAsync, size, toArray} from '@fxts/core'
-import { transform } from '@svgr/core'
+import {transform} from '@svgr/core'
 import ProgressBar from 'progress'
 
 import SVG_FILE_PATH_LIST from './SVG_FILE_PATH_LIST.json'
@@ -52,7 +52,7 @@ async function run() {
       const buffer = await readFile(path, { encoding: 'utf-8' })
       const jsCode = await transform(
         buffer.toString(),
-        { jsxRuntime: 'automatic', icon: false, typescript: true },
+        { jsxRuntime: 'automatic', icon: false, typescript: true, dimensions: true },
         { componentName }
       )
       await writeFile(`${RESULT_DIR_PATH}/${componentName}.tsx`, jsCode, {
