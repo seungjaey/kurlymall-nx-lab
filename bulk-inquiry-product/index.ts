@@ -42,11 +42,11 @@ const postInquiry = async (client: AxiosInstance, productCode: string, postId: n
 
 
 async function run() {
-  const TARGET_PRODUCT_CODE = '5116466';
+  const TARGET_PRODUCT_CODE = '1000035941';
   const httpClient = axios.create({
-    baseURL: 'https://api.perf.kurly.com',
+    baseURL: 'https://api.stg.kurly.com',
     headers: {
-      authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjYXJ0X2lkIjoiYjhmN2E2NjEtOGMxNi00MmM3LThjZTktNDE5ODcxZDc2MmNjIiwiaXNfZ3Vlc3QiOmZhbHNlLCJ1dWlkIjoiOTBlMDljYmEtZjhiYi01ZGFlLWEwMDUtNjY3YjFmYWYxMTExIiwibV9ubyI6MjUzMzA1ODMsIm1faWQiOiJwdXJwbGV1c2VyIiwibGV2ZWwiOjE0LCJzdWIiOiI5MGUwOWNiYS1mOGJiLTVkYWUtYTAwNS02NjdiMWZhZjExMTEiLCJpc3MiOiJodHRwczovL2FwaS5wZXJmLmt1cmx5LmNvbS92My9hdXRoL3JlZnJlc2giLCJpYXQiOjE2NjcyODIyNTgsImV4cCI6MTY2NzI5MTM0NCwibmJmIjoxNjY3Mjg3NzQ0LCJqdGkiOiJKdjJ6VHk5ckZnWGxnbXlqIn0.ts7kA9OGuUyz9CHWzzH3Lu8Yh_TE7gPDYpvzA87YiBc'
+      authorization: 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjYXJ0X2lkIjoiMjEyY2Q1ZmMtMzg5OC00NDYyLTk1NjgtNDE5Y2RlZTFkY2JlIiwiaXNfZ3Vlc3QiOmZhbHNlLCJ1dWlkIjoiYTlmY2VmNWItOWY4ZS01YTdmLTk1NDEtMjBjZDc4N2Q5ZGNjIiwibV9ubyI6MjUzMzA1NzYsIm1faWQiOiJ0aGVwdXJwbGV1c2VyIiwibGV2ZWwiOjEsInN1YiI6ImE5ZmNlZjViLTlmOGUtNWE3Zi05NTQxLTIwY2Q3ODdkOWRjYyIsImlzcyI6Imh0dHBzOi8vYXBpLnN0Zy5rdXJseS5jb20vdjMvYXV0aC9yZWZyZXNoIiwiaWF0IjoxNjY3ODAzOTQ1LCJleHAiOjE2Njc4MTA3OTgsIm5iZiI6MTY2NzgwNzE5OCwianRpIjoic3FiTzhxVDJnZzlmSE9KRyJ9.aaqzn1iiyq2VUZpo12ZdLwyPsTEnY33S2ohdIWa35Hg'
     },
   });
 
