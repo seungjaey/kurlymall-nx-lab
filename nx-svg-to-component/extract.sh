@@ -2,7 +2,7 @@
 OUTPUT_TEXT_FILE_NAME=SVG_FILE_PATH_LIST.txt
 OUTPUT_JSON_FILE_NAME=SVG_FILE_PATH_LIST.json
 
-find $1 -name "*.svg" | awk '{print substr($1, 2)}' > $OUTPUT_TEXT_FILE_NAME
+find  -name "*.svg" | awk '{print substr($1, 2)}' > $OUTPUT_TEXT_FILE_NAME
 
 cat $OUTPUT_TEXT_FILE_NAME | jq --raw-input | jq --slurp . > $OUTPUT_JSON_FILE_NAME
 
