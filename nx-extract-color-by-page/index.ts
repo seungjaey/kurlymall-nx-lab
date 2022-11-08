@@ -3,9 +3,7 @@ import {dirname, resolve} from 'path'
 import {pipe, map, filter, flat, toAsync, toArray, nth, each, isUndefined, size, range} from '@fxts/core'
 import ALL_PAGE_LIST from './ALL_PAGE_LIST.json'
 import SOURCE_BY_COLOR_DICTIONARY from './SOURCE_BY_COLOR_DICTIONARY.json'
-import ProgressBar from "progress";
-import SVG_FILE_PATH_LIST from "../nx-svg-to-component/SVG_FILE_PATH_LIST.json";
-
+import ProgressBar from 'progress';
 
 /**
  page A
