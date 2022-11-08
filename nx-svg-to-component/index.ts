@@ -5,7 +5,7 @@ import {pipe, map, each, toAsync, size, toArray} from '@fxts/core'
 import {transform} from '@svgr/core'
 import ProgressBar from 'progress'
 
-import SVG_FILE_PATH_LIST from './SVG_FILE_PATH_LIST.json'
+import SVG_FILE_PATH_LIST from './SVG_FILE_PATH_LIST_V2.json'
 
 import setupDir from '../utils/setupDir'
 
@@ -13,10 +13,6 @@ config()
 
 async function run() {
   const RESULT_DIR_PATH = resolve(__dirname, 'result')
-  // TODO: Extract as ENV Variable
-  const BASE_PROJECT_PATH = '/Users/mk-mac-135/kurly/kurlymall-nx'
-
-  // TODO: Spawn child process for run  `extract.sh`
 
   await setupDir(RESULT_DIR_PATH)
 
@@ -28,12 +24,11 @@ async function run() {
   const pathList = pipe(
     SVG_FILE_PATH_LIST,
     map(path => {
-      const absolutePath = `${BASE_PROJECT_PATH}${path}`
-      const baseName = basename(absolutePath)
+      const baseName = basename(path)
       const componentName = baseName
         .replace(new RegExp('-', 'g'), '_')
         .replace('.svg', '')
-      return [absolutePath, componentName]
+      return [path, componentName]
     }),
     toArray
   )
@@ -52,7 +47,13 @@ async function run() {
       const buffer = await readFile(path, { encoding: 'utf-8' })
       const jsCode = await transform(
         buffer.toString(),
-        { jsxRuntime: 'automatic', icon: false, typescript: true, dimensions: true },
+        {
+          jsxRuntime: 'automatic',
+          icon: false,
+          typescript: true,
+          dimensions: true,
+          plugins: ['@svgr/plugin-svgo', '@svgr/plugin-jsx', '@svgr/plugin-prettier'],
+        },
         { componentName }
       )
       await writeFile(`${RESULT_DIR_PATH}/${componentName}.tsx`, jsCode, {

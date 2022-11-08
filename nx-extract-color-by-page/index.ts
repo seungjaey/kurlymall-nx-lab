@@ -96,7 +96,7 @@ const run = async () => {
       await recursiveFindDependencies(pageSourcePath, 0, pageSourcePath)
     }),
   )
-  await writeFile('PAGE_BY_DEPENDENCIES.json', JSON.stringify(MEMO))
+  await writeFile('_PAGE_BY_DEPENDENCIES.json', JSON.stringify(MEMO))
 }
 
 run()
