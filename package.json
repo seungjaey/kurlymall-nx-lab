@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start:color": "ts-node ./nx-extract-color-by-page",
+    "start:nx-extract-color": "ts-node ./nx-extract-color",
+    "start:nx-route-path-ts": "ts-node ./nx-route-path-ts",
+    "start:nx-svg-to-component": "ts-node ./nx-svg-to-component",
+    "start:simple-engine": "ts-node ./simple-engine"
   },
   "repository": {
     "type": "git",
@@ -21,16 +25,21 @@
     "@types/debug": "^4.1.7",
     "@types/node": "^18.7.15",
     "@types/progress": "^2.0.5",
+    "@types/react": "^18.0.25",
     "ts-node": "^10.9.1",
     "typescript": "^4.8.2"
   },
   "dependencies": {
     "@fxts/core": "^0.9.0",
     "@svgr/core": "^6.3.1",
+    "@svgr/plugin-jsx": "^6.5.1",
+    "@svgr/plugin-prettier": "^6.5.1",
+    "@svgr/plugin-svgo": "^6.5.1",
     "axios": "^0.27.2",
     "debug": "^4.3.4",
     "dotenv": "^16.0.2",
     "progress": "^2.0.3",
-    "puppeteer": "^17.1.1"
+    "puppeteer": "^17.1.1",
+    "react": "^18.2.0"
   }
 }
